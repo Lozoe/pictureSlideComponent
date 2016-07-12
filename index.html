@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>picture slide effect</title>
+        <meta http-equiv="content-Type" content="text/html; charset=utf-8"/>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no" />
+        <meta name="apple-touch-fullscreen" content="YES"/><!--允许保存为ios全屏应用-->
+        <meta name="apple-mobile-web-app-status-bar-style" content="black"/><!--定义iphone状态条的颜色-->
+        <style>
+            body{
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+                background: #333;
+                /*height: 100%;
+                position: absolute;*/
+            }
+
+            /* 隐藏画布外的内容 */
+            .container {
+                overflow: hidden;
+            }
+
+            .pics, .pics-item {
+                overflow: hidden;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+            }
+
+            .pics {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .pics-item {
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: box;
+                display: flex;
+                -webkit-box-align:center;
+                -webkit-align-items:center;
+                box-align:center;
+                align-items:center;
+                height: 568px;
+                /* vertical-align: middle;
+                height: 568px;
+                line-height: 568px; */
+            }
+
+            .pics-item-1 {
+                -webkit-transform: translate3d(0,0,0);
+            }
+
+            .pics-item-2 {
+                -webkit-transform: translate3d(320,0,0);
+            }
+
+            .pics-item-3 {
+                -webkit-transform: translate3d(640px,0,0);
+            }
+
+            /* .pics-item img {
+                vertical-align: middle;
+                width: 320px;
+            } */
+
+        </style>
+    </head>
+    <body>
+        <!-- 外层画布容器 -->
+        <div id="canvas" class="container">
+            <ul class="pics">
+                <li class="pics-item pics-item-1">
+                    <img src="img/1.jpg"/>
+                </li>
+                <li class="pics-item pics-item-2">
+                    <img src="img/2.jpg"/>
+                </li>
+                <li class="pics-item pics-item-3">
+                    <img src="img/3.jpg"/>
+                </li>
+            </ul>
+        </div>
+        <!-- /外层画布容器 -->
+
+    </body>
+</html>
