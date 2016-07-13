@@ -71,6 +71,102 @@
             </ul>
         </div>
         <!-- /外层画布容器 -->
+        <script>
+            //所有的数据
+        var list = [{
+            height: 950,
+            width: 800,
+            img: "imgs/1.jpg"
+        },
+        {
+            height: 1187,
+            width: 900,
+            img: "imgs/2.jpg"
+        },
+        {
+            height: 766,
+            width: 980,
+            img: "imgs/3.jpg"
+        },
+        {
+            height: 754,
+            width: 980,
+            img: "imgs/4.jpg"
+        },
+        {
+            height: 493,
+            img: "imgs/5.jpg",
+            width: 750
+        },
+        {
+            height: 500,
+            img: "imgs/6.jpg",
+            width: 750
+        },
+        {
+            height: 600,
+            img: "imgs/7.jpg",
+            width: 400
+        }];
 
+        //构造函数
+        function Slider(opts){
+            //构造函数需要的参数
+            this.wrap = opts.dom;
+            this.list = opts.list;
+            //构造三步奏
+            this.init();
+            this.renderDOM();
+            this.bindDOM();
+        }
+        //第一步 -- 初始化
+        Slider.prototype.init = function() {
+            //设定窗口比率
+            this.radio = window.innerHeight/window.innerWidth;
+            //设定一页的宽度
+            this.scaleW = window.innerWidth;
+            //设定初始的索引值
+            this.idx = 0;
+        };
+
+        //第二步 -- 根据数据渲染DOM
+        Slider.prototype.renderDOM = function(){
+            var wrap = this.wrap;
+            var data = this.list;
+            var len = data.length;
+
+            this.outer = document.createElement('ul');
+            //根据元素的
+            for(var i = 0; i < len; i++){
+                var li = document.createElement('li');
+                var item = data[i];
+                li.style.width = window.innerWidth +'px';
+                li.style.webkitTransform = 'translate3d('+ i*this.scaleW +'px, 0, 0)';
+                if(item){
+                    //根据窗口的比例与图片的比例来确定
+                    //图片是根据宽度来等比缩放还是根据高度来等比缩放
+                    if(item['height']/item['width'] > this.radio){
+                        li.innerHTML = '<img height="'+ window.innerHeight +'" src="'+ item['img'] +'">';
+                    }else{
+                        li.innerHTML = '<img width="'+ window.innerWidth +'" src="'+ item['img'] +'">';
+                    }
+                }
+                this.outer.appendChild(li);
+            }
+
+            //UL的宽度和画布宽度一致
+            this.outer.style.cssText = 'width:' + this.scaleW +'px';
+
+            wrap.style.height = window.innerHeight + 'px';
+            wrap.appendChild(this.outer);
+        };
+
+
+        //初始化Slider 实例
+        new Slider({
+            dom : document.getElementById('canvas'),
+            list : list
+        });
+        </script>
     </body>
 </html>
