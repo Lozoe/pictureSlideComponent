@@ -43,32 +43,11 @@
                 width: 100%;
                 overflow: hidden;
             }
-
-            .pics-item-1 {
-                -webkit-transform: translate3d(0,0,0);
-            }
-            .pics-item-2 {
-                -webkit-transform: translate3d(320px,0,0);
-            }
-            .pics-item-3 {
-                -webkit-transform: translate3d(640px,0,0);
-            }
         </style>
     </head>
     <body>
         <!-- 外层画布容器 -->
         <div id="canvas" class="container">
-            <ul class="pics">
-                <li class="pics-item pics-item-1">
-                    <img src="img/1.jpg"/>
-                </li>
-                <li class="pics-item pics-item-2">
-                    <img src="img/2.jpg"/>
-                </li>
-                <li class="pics-item pics-item-3">
-                    <img src="img/3.jpg"/>
-                </li>
-            </ul>
         </div>
         <!-- /外层画布容器 -->
         <script>
@@ -76,36 +55,36 @@
         var list = [{
             height: 950,
             width: 800,
-            img: "imgs/1.jpg"
+            img: "img/1.jpg"
         },
         {
             height: 1187,
             width: 900,
-            img: "imgs/2.jpg"
+            img: "img/2.jpg"
         },
         {
             height: 766,
             width: 980,
-            img: "imgs/3.jpg"
+            img: "img/3.jpg"
         },
         {
             height: 754,
             width: 980,
-            img: "imgs/4.jpg"
+            img: "img/4.jpg"
         },
         {
             height: 493,
-            img: "imgs/5.jpg",
+            img: "img/5.jpg",
             width: 750
         },
         {
             height: 500,
-            img: "imgs/6.jpg",
+            img: "img/6.jpg",
             width: 750
         },
         {
             height: 600,
-            img: "imgs/7.jpg",
+            img: "img/7.jpg",
             width: 400
         }];
 
@@ -136,7 +115,7 @@
             var len = data.length;
 
             this.outer = document.createElement('ul');
-            //根据元素的
+            //根据元素的长宽尺寸设定具体大小
             for(var i = 0; i < len; i++){
                 var li = document.createElement('li');
                 var item = data[i];
@@ -161,6 +140,75 @@
             wrap.appendChild(this.outer);
         };
 
+        //第三步，绑定变量
+        Slider.prototype.bindDOM = function() {
+            var self = this;
+            var scale = self.scaleW;
+            var outer = self.outer;
+            var len = self.list.length;
+
+            // touchstart
+            var startHandler = function(evt) {
+                //记录手机按下时的坐标
+                self.startX = evt.touches[0].pageX;
+                //清除偏移量
+                self.offsetX = 0;
+                //记录事件开始时的时间
+                self.startTime = new Date() * 1;
+            };
+            // touchmove
+            var moveHandler = function(evt) {
+                //touchmove时阻止浏览器默认行为
+                evt.preventDefault();
+                self.offsetX = evt.touches[0].pageX - self.startX;
+                var lis = outer.getElementsByTagName("li");
+                var i = self.idx - 1;
+                var m = i + 3;
+                for(i; i < m; i++) {
+                    lis[i] && (lis[i].style.webkitTransition = '-webkit-transform 0s ease-out');
+                    lis[i] && (lis[i].style.webkitTransform = 'translate3d('+ ((i-self.idx)*self.scaleW + self.offsetX) +'px, 0, 0)');
+                }
+            };
+            // touchend
+            var endHandler = function(evt) {
+                var boundary = scale/6;
+                var endTime = new Date() * 1;
+                var lis = outer.getElementsByTagName("li");
+
+                if(endTime - self.startTime > 800) {
+                    if(self.offsetX >= boundary) {
+                        //进入上一页
+                        self.go("-1");
+                    } else if(self.offsetX < boundary){
+                        //进入下一页
+                        self.go("+1");
+                    } else {
+                        //留在本页
+                        self.go("0");
+                    }
+                } else {
+                    //快操作
+                    if(self.offsetX > 50) {
+                        //进入上一页
+                        self.go("-1");
+                    } else if(self.offsetX <-50) {
+                        //进入下一页
+                        self.go("+1");
+                    } else {
+                        //留在本页
+                        self.go("0");
+                    }
+                }
+
+            };
+            outer.addEventListener('touchstart',startHandler);
+            outer.addEventListener('touchmove',moveHandler);
+            outer.addEventListener('touchend',endHandler);
+        };
+
+        Slider.prototype.go = function(index) {
+
+        };
 
         //初始化Slider 实例
         new Slider({
